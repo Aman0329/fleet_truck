@@ -1,0 +1,66 @@
+let us assume i have a fleet of 7 trucks and i have 3 charger available.
+given the list of 7 trucks with there battery capacity and current battery level
+trucks=[T1(100KWH , 40%) , T2(120KWH,30%) , T3(110KWH ,50%) ,T4(130KWH ,30%) ,T5(150KWH ,10%) ,T6(80KWH ,20%) ,T7(120KWH ,20%)]
+CHARGERS=[C1(20KW),C2(30KW),C3(42KW)]
+FIRSTLY I WILL CREATE AN ARRAY WHICH INCLUDES THE CAPACITY TO CHARGE OF EACH TRUCK
+FORMULA USED=TOTAL CAPACITY *(100-CURRENT LEVEL CHARGING)/100;
+EXAMPLE FOR T1 : CAPACITY TO CHARGE=100*(0.6)=60KWH
+CAPACITY TO CHARGE=[T1(60KWH), T2(84KWH), T3(55KWH), T4(90KWH), T5(135KWH) ,T6(64KWH), T7(96KWH)];
+
+TOTAL TIME ASSUMING =5 HOURS
+
+1ST APPROACH-
+i)sort the capacity to charge array in ascending order
+ii)pick the first n elements= no of chargers available
+iii)map the charger with truck in following sequence- small charger = small battery and large charger=large battery
+therefore - array after sorting will be [T3(55),T1(60),T6(64),T2(84),T4(90),T7(96),T5(135)];
+NOW C1->T3  CHARGING TIME= CAPACITY TO CHARGE/CHARGING SPEED (2.75HR)
+    C2->T1 (2HR)
+    C3->T6 (1.5HR)
+
+    AFTER 1.5HR C3 WILL BE VACANT SO PICKING NEXT 3 ELEMENTS
+    C3->T7 (2.2HR) AFTER THIS C3 WILL COMPLETE ITS 3.7 HOUR
+    AFTER 2HR FROM STARTING TIME C2 WILL BE FREE
+    SO C2->T4 (3HR) NOW AFTER THIS C2 WILL COMPLETE ITS 5 HOUR
+    ALSO THERE IS NO TRUCK THAT C1 CAN CHARGE AFTER CHARGING T3
+    SO TOTAL TRUCKS CHARGED= T3,T1,T6,T7,T4 (TOTAL 5 TRUCK)
+
+
+ 2ND APPROACH
+ i)sort the capacity to charge array in ascending order
+ ii)pick the first n elements= no of chargers available
+ iii)map the charger with truck in following sequence - small battery=large charger and large battery =small charger
+  therefore - array after sorting will be [T3(55),T1(60),T6(64),T2(84),T4(90),T7(96),T5(135)];
+  NOW C1->T6 (3.2HR)
+      C2->T1 (2HR)
+      C3->T3 (1.3HR)
+      AFTER 1.3HR C3 WILL BE FREE SO PICKING NEXT THREE ELEMENTS
+      C3->T2 (2HR)
+      AFTER THIS C3 WILL COMPLETE ITS 3.3HR AND CANT CHARGE ANY OTHER TRUCK
+
+     AFTER 2 HR C2 WILL BE FREE
+     C2->T4 (3HR) NOW AFTER THIS C2 WILL COMPLETE ITS 5HR AND CANT CHARGE ANY OTHER TRUCK
+
+     C1 ALSO CANT CHARGE ANY OTHER TRUCK
+
+     SO TOTAL TRUCK CHARGE=T6,T1,T3,T2,T4 (TOTAL 5 TRUCKS)
+
+ 3RD APPROACH (FEASIBLE ONE)
+ i)calculate the total kwh of each charger -
+ c1=20*5=100kwh
+ c2=30*5=150kwh
+ c3=42*5=210kwh
+ now we have array= [T3(55),T1(60),T6(64),T2(84),T4(90),T7(96),T5(135)];
+ our approach - pick max element from array and subtract it from c1(kwh) and if it comes >=0 then okay otherwise pick second largest element
+ now after assigning truck to c1 pick element just smaller then assigned to c1 and subtract it kwh from c2 and now find value<=kwh remaining in array
+ now assign all smaller kwh to c3 until value become>=0
+
+ ex- c1->t7
+     c2->t4 , t1
+     c3->t3, t6 , t2
+     total trucks charged = 6 (max)
+
+
+
+
+
